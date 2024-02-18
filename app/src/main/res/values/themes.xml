@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.GL2CallerApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/blue</item>
+        <!-- couleur par defaut des boutons-->
+
+
+        <!-- couleur de la barre de notification-->
+        <item name="colorPrimaryDark">#1970BA</item>
+
+        <!-- couleur de la barre de saisie et le curseur-->
+        <item name="colorAccent">#FF9800</item>
+
+    </style>
+
+    <style name="Theme.GL2CallerApp" parent="Base.Theme.GL2CallerApp" />
+</resources>

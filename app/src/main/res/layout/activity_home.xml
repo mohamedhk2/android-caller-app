@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/images_1"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".Home">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:gravity="center"
+        android:text="Home"
+        android:textColor="#D8E6E5"
+        android:textSize="34sp"
+        android:textStyle="bold|italic" />
+
+    <Button
+        android:id="@+id/btnadd_home"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Add" />
+
+    <Button
+        android:id="@+id/btnlist_home"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="List" />
+</LinearLayout>
