@@ -7,10 +7,11 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ListProfil extends AppCompatActivity {
+import itbs.sem2.gl2callerapp.db.ProfilManager;
+
+public class ListProfilsActivity extends AppCompatActivity {
 
     RecyclerView rv_list;
     EditText edrech;
@@ -29,13 +30,17 @@ public class ListProfil extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,
                 Home.data);*/
 
-        MyRecyclerProfilAdapter ad = new MyRecyclerProfilAdapter(ListProfil.this, Home.data);
+        ProfilManager pm = new ProfilManager(ListProfilsActivity.this);
+        pm.ouvrir("caller.db");
+        HomeActivity.data = pm.selectionnertout();
+
+        MyRecyclerProfilAdapter ad = new MyRecyclerProfilAdapter(ListProfilsActivity.this, HomeActivity.data);
         rv_list.setAdapter(ad);
 
         /*LinearLayoutManager layoutManager = new LinearLayoutManager(ListProfil.this, LinearLayoutManager.VERTICAL, false);
         rv_list.setLayoutManager(layoutManager);*/
 
-        GridLayoutManager layoutManager = new GridLayoutManager(ListProfil.this, 1, GridLayoutManager.VERTICAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(ListProfilsActivity.this, 1, GridLayoutManager.VERTICAL, false);
         rv_list.setLayoutManager(layoutManager);
 
         edrech.addTextChangedListener(
@@ -50,7 +55,8 @@ public class ListProfil extends AppCompatActivity {
 
                     @Override
                     public void afterTextChanged(android.text.Editable s) {
-                        //Recherche selon Le nom, prenom ou numero de la chaine saisie
+                        String query = s.toString().trim();
+                        ad.filter(query);
                     }
                 }
         );

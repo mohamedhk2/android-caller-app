@@ -7,14 +7,14 @@
     android:background="@drawable/images_1"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".Home">
+    tools:context=".HomeActivity">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:gravity="center"
-        android:text="Home"
+        android:text="@string/app_name"
         android:textColor="#D8E6E5"
         android:textSize="34sp"
         android:textStyle="bold|italic" />
@@ -23,11 +23,23 @@
         android:id="@+id/btnadd_home"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Add" />
+        android:text="Ajouter" />
 
     <Button
         android:id="@+id/btnlist_home"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="List" />
+        android:text="Liste" />
+
+    <Button
+        android:id="@+id/btnlogout_home"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Déconnexion" />
+
+    <Button
+        android:id="@+id/btnexit_home"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Quitter" />
 </LinearLayout>

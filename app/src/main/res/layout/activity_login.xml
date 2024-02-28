@@ -7,7 +7,7 @@
     android:background="@drawable/images_1"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".MainActivity">
+    tools:context=".LoginActivity">
 
     <TextView
         android:id="@+id/textView2"
@@ -49,20 +49,35 @@
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Password"
+            android:text="Mot de passe"
             android:textColor="#FAF6F6"
             android:textSize="20sp"
+            android:layout_weight="1"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/edpwd_auth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:ems="10"
             android:inputType="numberPassword" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Switch
+            android:id="@+id/switch_connected_auth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textColor="#F4EFEF"
+            android:text="Rester connecté" />
     </LinearLayout>
 
     <LinearLayout
@@ -76,13 +91,13 @@
             android:id="@+id/btnexit_auth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Exit" />
+            android:text="Quitter" />
 
         <Button
             android:id="@+id/btnlogin_auth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="Login" />
+            android:text="Connexion" />
     </LinearLayout>
 </LinearLayout>

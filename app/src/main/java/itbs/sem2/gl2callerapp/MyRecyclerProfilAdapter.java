@@ -1,5 +1,6 @@
 package itbs.sem2.gl2callerapp;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,16 +13,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import itbs.sem2.gl2callerapp.db.Profil;
+import itbs.sem2.gl2callerapp.db.ProfilManager;
+
 public class MyRecyclerProfilAdapter extends RecyclerView.Adapter<MyRecyclerProfilAdapter.MyViewHolder> {
 
     Context con;
-    ArrayList<Profil> data;
+    ArrayList<Profil> originalList = new ArrayList<>();
+    ArrayList<Profil> filteredList = new ArrayList<>();
 
     @NonNull
     @Override
@@ -36,23 +43,23 @@ public class MyRecyclerProfilAdapter extends RecyclerView.Adapter<MyRecyclerProf
 
     public MyRecyclerProfilAdapter(Context con, ArrayList<Profil> data) {
         this.con = con;
-        this.data = data;
-
+        this.originalList.addAll(data);
+        this.filteredList.addAll(data);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyRecyclerProfilAdapter.MyViewHolder holder, int position) {
         // Affectation des holders
-        Profil p = data.get(position);
-        holder.tvnom.setText(p.nom);
-        holder.tvprenom.setText(p.prenom);
-        holder.tvnumero.setText(p.numero);
+        Profil p = filteredList.get(position);
+        holder.tvnom.setText(p.getNom());
+        holder.tvprenom.setText(p.getPrenom());
+        holder.tvnumero.setText(p.getNumero());
     }
 
     @Override
     public int getItemCount() {
         // retourne le nbre total des elements
-        return data.size();
+        return filteredList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -85,11 +92,26 @@ public class MyRecyclerProfilAdapter extends RecyclerView.Adapter<MyRecyclerProf
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             int indice = getAdapterPosition();// renvoie la position de Lelement selectionnée
-                            // A FAIRE: supprimer de la base
-
-                            // supprimer lelement
-                            data.remove(indice);
-                            notifyDataSetChanged();// MAJ de l'affichage
+                            Profil p = filteredList.get(indice);
+                            ProfilManager pm = new ProfilManager(con);
+                            pm.ouvrir("caller.db");
+                            long supprimer = pm.supprimer(p);
+                            if (supprimer > 0) {
+                                // supprimer lelement
+                                filteredList.remove(indice);
+                                notifyDataSetChanged();// MAJ de l'affichage
+                                AlertDialog.Builder alert = new AlertDialog.Builder(con);
+                                alert.setTitle("Succès");
+                                alert.setMessage("Suppression réussie");
+                                alert.setPositiveButton("OK", null);
+                                alert.show();
+                            } else {
+                                AlertDialog.Builder alert = new AlertDialog.Builder(con);
+                                alert.setTitle("Erreur");
+                                alert.setMessage("Erreur de suppression");
+                                alert.setPositiveButton("OK", null);
+                                alert.show();
+                            }
                         }
                     });
                     alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -106,15 +128,16 @@ public class MyRecyclerProfilAdapter extends RecyclerView.Adapter<MyRecyclerProf
                 @Override
                 public void onClick(View view) {
                     int indice = getAdapterPosition();
-                    Profil p = data.get(indice);
+                    Profil p = filteredList.get(indice);
 
-                    Intent i = new Intent(Intent.ACTION_DIAL);
-                    i.setData(Uri.parse("tel:" + p.numero));
+                    Intent i = new Intent(Intent.ACTION_CALL);
+                    i.setData(Uri.parse("tel:" + p.getNumero()));
                     con.startActivity(i);
                 }
             });
             imgedit.setOnClickListener(new View.OnClickListener() {
                 AlertDialog dialog;
+
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(con);
@@ -131,11 +154,11 @@ public class MyRecyclerProfilAdapter extends RecyclerView.Adapter<MyRecyclerProf
                             btnannuler = vd.findViewById(R.id.btnannuler_dialog);
 
                     int indice = getAdapterPosition();
-                    Profil p = data.get(indice);
+                    Profil p = filteredList.get(indice);
 
-                    ednom.setText(p.nom);
-                    edprenom.setText(p.prenom);
-                    ednumero.setText(p.numero);
+                    ednom.setText(p.getNom());
+                    edprenom.setText(p.getPrenom());
+                    ednumero.setText(p.getNumero());
 
                     btnenregistrer.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -143,12 +166,32 @@ public class MyRecyclerProfilAdapter extends RecyclerView.Adapter<MyRecyclerProf
                             String nom = ednom.getText().toString();
                             String prenom = edprenom.getText().toString();
                             String numero = ednumero.getText().toString();
-
-                            Profil p = new Profil(nom, prenom, numero);
-                            // Modifier la bdd
-                            data.set(indice, p);
-                            notifyDataSetChanged();// rafraichir le view
-                            dialog.dismiss();
+                            p.setNom(nom);
+                            p.setPrenom(prenom);
+                            p.setNumero(numero);
+                            ProfilManager pm = new ProfilManager(con);
+                            pm.ouvrir("caller.db");
+                            long modifier = pm.modifier(p);
+                            if (modifier > 0) {
+                                AlertDialog.Builder alert = new AlertDialog.Builder(con);
+                                alert.setTitle("Succès");
+                                alert.setMessage("Modification réussie");
+                                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        filteredList.set(indice, p);
+                                        notifyDataSetChanged();// rafraichir le view
+                                        dialog.dismiss();
+                                    }
+                                });
+                                alert.show();
+                            } else {
+                                AlertDialog.Builder alert = new AlertDialog.Builder(con);
+                                alert.setTitle("Erreur");
+                                alert.setMessage("Erreur de modification");
+                                alert.setPositiveButton("OK", null);
+                                alert.show();
+                            }
                         }
                     });
 
@@ -166,5 +209,23 @@ public class MyRecyclerProfilAdapter extends RecyclerView.Adapter<MyRecyclerProf
                 }
             });
         }
+    }
+
+    public void filter(String query) {
+        filteredList.clear();
+        if (query.isEmpty()) {
+            filteredList.addAll(originalList);
+        } else {
+            for (Profil profil : originalList) {
+                if (
+                        profil.getNom().toLowerCase().contains(query.toLowerCase())
+                                || profil.getPrenom().toLowerCase().contains(query.toLowerCase())
+                                || profil.getNumero().toLowerCase().contains(query.toLowerCase())
+                ) {
+                    filteredList.add(profil);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

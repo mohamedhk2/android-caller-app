@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Name" />
+        android:hint="Prénom"
+        android:text="" />
 
     <EditText
         android:id="@+id/edprenom_dialog"
@@ -18,13 +19,15 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Name" />
+        android:hint="Nom"
+        android:text="" />
 
     <EditText
         android:id="@+id/ednumero_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Téléphone"
         android:inputType="phone" />
 
     <LinearLayout

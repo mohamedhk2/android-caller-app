@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AddProfil">
+    tools:context=".AddProfilActivity">
 
     <TextView
         android:id="@+id/textView"
@@ -22,22 +22,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="text"
-        android:text="Name" />
+        android:hint="Prénom"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/edlastname_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="text"
-        android:text="Name" />
+        android:hint="Nom"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/edphone_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Téléphone"
         android:inputType="phone" />
 
     <LinearLayout
@@ -50,13 +51,13 @@
             android:id="@+id/btnsave_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save" />
+            android:text="Enregistrer" />
 
         <Button
             android:id="@+id/btnback_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Back" />
+            android:text="Retour" />
     </LinearLayout>
 
 </LinearLayout>
